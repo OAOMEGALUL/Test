@@ -6,7 +6,7 @@
     <title>ОАО «Мегалюль» | SQUAD</title>
     <style>
         :root {
-            --orange: #ff5500;
+            --accent_color: #ff5500;
             --bg: #050505;
             --card-bg: #0f0f0f;
             --text: #e0e0e0;
@@ -37,7 +37,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--orange);
+            border-bottom: 2px solid var(--accent_color);
             background: rgba(5, 5, 5, 0.95);
             position: sticky;
             top: 0;
@@ -47,7 +47,7 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 900;
-            color: var(--orange);
+            color: var(--accent_color);
             text-transform: uppercase;
             letter-spacing: -1px;
         }
@@ -70,25 +70,25 @@
         }
 
         nav a:hover {
-            color: var(--orange);
+            color: var(--accent_color);
         }
 
         .btn-contact {
-            background: var(--orange);
+            background: var(--accent_color);
             color: #000;
             padding: 8px 18px;
             text-decoration: none;
             font-weight: bold;
             text-transform: uppercase;
             transition: 0.2s;
-            border: 1px solid var(--orange);
-            border-radius: var(--radius); /* Скругление кнопки */
+            border: 1px solid var(--accent_color);
+            border-radius: var(5px); /* Скругление кнопки */
         }
 
         .btn-contact:hover {
             background: transparent;
-            color: var(--orange);
-            box-shadow: 0 0 15px var(--orange);
+            color: var(--accent_color);
+            box-shadow: 0 0 15px var(--accent_color);
         }
 
         .hero {
@@ -105,14 +105,14 @@
             line-height: 1.2;
         }
 
-        .hero h1 span { color: var(--orange); }
+        .hero h1 span { color: var(--accent_color); }
 
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
             color: #999;
             margin: 25px 0;
-            border-left: 3px solid var(--orange);
+            border-left: 3px solid var(--accent_color);
             padding-left: 15px;
         }
 
@@ -131,10 +131,10 @@
             transition: 0.3s;
         }
 
-        .card:hover { border-color: var(--orange); }
+        .card:hover { border-color: var(--accent_color); }
 
         .card h3 {
-            color: var(--orange);
+            color: var(--accent_color);
             margin-top: 0;
             text-transform: uppercase;
             font-size: 1.4rem;
@@ -145,7 +145,7 @@
         .warning-box {
             grid-column: 1 / -1;
             background: #150800;
-            border: 2px solid var(--orange);
+            border: 2px solid var(--accent_color);
             border-radius: var(--radius); /* Скругление варнинг бокса */
             padding: 50px 40px;
             text-align: center;
@@ -192,14 +192,14 @@
 
         /* Анимация печатающегося текста */
         .typewriter {
-            border-right: 2px solid var(--orange);
+            border-right: 2px solid var(--accent_color);
             padding-right: 5px;
             animation: caret 0.75s step-end infinite;
         }
 
         @keyframes caret {
             from, to { border-color: transparent }
-            50% { border-color: var(--orange); }
+            50% { border-color: var(--accent_color); }
         }
     </style>
 </head>
@@ -255,8 +255,8 @@
 </footer>
 
 <script>
-    const lyulPhrases = ["Смех.", "Радость.", "Просмотр над педагогами."];
-    const lyulyaPhrases = ["Жертва.", "юзер лох.", "получил пизды."];
+    const lyulPhrases = ["Смех.", "власть."];
+    const lyulyaPhrases = ["Жертва.", "лох.", "получил пизды."];
 
     function setupTypewriter(elementId, phrases) {
         let phraseIndex = 0;
