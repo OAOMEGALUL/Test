@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OAO MEGALUL | OFFICIAL HUB</title>
+    <title>OAO MEGALUL | SQUAD</title>
     <style>
         :root {
             --orange: #ff5500;
@@ -21,6 +21,7 @@
             overflow-x: hidden;
         }
 
+        /* Текстура шума на фоне */
         body::before {
             content: "";
             position: fixed;
@@ -34,6 +35,183 @@
         header {
             padding: 20px 8%;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--orange);
+            background: rgba(5, 5, 5, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .btn-contact {
+            background: var(--orange);
+            color: #000;
+            padding: 10px 22px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.2s;
+            border: 1px solid var(--orange);
+        }
+
+        .btn-contact:hover {
+            background: transparent;
+            color: var(--orange);
+            box-shadow: 0 0 15px var(--orange);
+        }
+
+        .hero {
+            padding: 80px 8%;
+            background: radial-gradient(circle at 80% 20%, #251000 0%, #050505 50%);
+            border-bottom: 1px solid #111;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .hero h1 span { color: var(--orange); }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            color: #999;
+            margin: 25px 0;
+            border-left: 3px solid var(--orange);
+            padding-left: 15px;
+        }
+
+        .grid {
+            padding: 40px 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 35px;
+            border: 1px solid #1a1a1a;
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--orange); }
+
+        .card h3 {
+            color: var(--orange);
+            margin-top: 0;
+            text-transform: uppercase;
+            font-size: 1.4rem;
+        }
+
+        .card p { color: #888; font-size: 0.95rem; }
+
+        .warning-box {
+            grid-column: 1 / -1;
+            background: #150800;
+            border: 2px solid var(--orange);
+            padding: 50px 40px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .warning-box h2 {
+            font-size: 2.2rem;
+            color: #ff3300;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        .blink { animation: blinker 0.8s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        .cta-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #fff;
+            background: #ff3300;
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .cta-link:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 25px #ff3300;
+        }
+
+        footer {
+            padding: 40px 8%;
+            text-align: center;
+            color: #333;
+            font-size: 0.8rem;
+            border-top: 1px solid #111;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">OAO MEGALUL</div>
+    <a href="https://t.me/tccbog" class="btn-contact">Связаться</a>
+</header>
+
+<section class="hero">
+    <h1>ЛЮЛЬ — ЭТО <span>МЫ</span>.</h1>
+    <h1>ЛЮЛЯ — ЭТО <span>ЖЕРТВА</span>.</h1>
+    <p>Сквад который ебет школьников. <br>
+    Не качай где попало. <br>
+    Попался на ратку? Ну ты и далбаеб.</p>
+</section>
+
+<section class="grid">
+    <div class="card">
+        <h3>Мы испольузем:</h3>
+        <p>Полный спектр: HVNC, File Manager, Remote Shell. Управляй системой жертвы так же легко, как своей собственной.</p>
+    </div>
+    
+    <div class="card">
+        <h3>Сидим на своей ратке</h3>
+        <p>Не ной в лс что мы XWORM юзеры или вебрат. У нас самписная ратка.</p>
+    </div>
+
+    <div class="card">
+        <h3>Буткитность</h3>
+        <p>Попытаешсья снести винду и все? Неа Bootkit сделает за нас работу и скачает наш билд.</p>
+    </div>
+
+    <div class="warning-box">
+        <h2 class="blink">СЛОВИЛ ЛОКЕР, ЕБАНЫЙ ДАУН?</h2>
+        <p>Твой экран заблокирован, файлы под замком, а ты сидишь и обтекаешь.</p>
+        <p>Чтобы разблокать свою помойку, пиши сюда и надейся на милость хозяев:</p>
+        <a href="https://t.me/tccbog" class="cta-link">ПИСАТЬ СЮДА</a>
+        <p style="margin-top: 25px; font-size: 0.9rem; color: #555;">* Посмешище для RATеров — суровая реальность для тебя.</p>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 OAO MEGALUL SQUAD. FREEDOM TO RATERS. NO MERCY.
+</footer>
+
+</body>
+</html>
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid var(--orange);
