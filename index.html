@@ -11,6 +11,7 @@
             --card-bg: #0f0f0f;
             --text: #e0e0e0;
             --radius: 12px; /* Переменная для скругления */
+            --button_radius: 6px;
         }
 
         body {
@@ -82,7 +83,7 @@
             text-transform: uppercase;
             transition: 0.2s;
             border: 1px solid var(--accent_color);
-            border-radius: var(5px); /* Скругление кнопки */
+            border-radius: var(--button_radius); /* Скругление кнопки */
         }
 
         .btn-contact:hover {
@@ -172,7 +173,7 @@
             font-weight: bold;
             font-size: 1.3rem;
             text-transform: uppercase;
-            border-radius: var(--radius); /* Скругление большой кнопки */
+            border-radius: var(--button_radius); /* Скругление большой кнопки */
             transition: 0.3s;
         }
 
