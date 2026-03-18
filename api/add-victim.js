@@ -8,7 +8,7 @@ const supabase = createClient(
 module.exports = async (req, res) => {
   // Разрешаем только POST запросы (отправка формы)
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: '404 No found' });
+    return res.status(405).json({ error: '404 Not Found' });
   }
 
   const { name, description, link, photo_url, secret_key } = req.body;
