@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALL OF LULZ | OAO MEGALUL</title>
+    <style>
+        :root {
+            --accent_color: #ff5500;
+            --bg: #050505;
+            --card-bg: #0f0f0f;
+            --text: #e0e0e0;
+            --radius: 12px;
+            --button_radius: 6px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin: 0;
+            padding: 40px 8%;
+        }
+
+        h1 { color: var(--accent_color); text-transform: uppercase; text-align: center; font-size: 2.5rem; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 40px; }
+
+        .trophy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+        .trophy-card {
+            background: var(--card-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: var(--radius);
+            padding: 25px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .trophy-card:hover { border-color: var(--accent_color); transform: translateY(-5px); }
+
+        .victim-img {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 2px solid var(--accent_color); margin-bottom: 15px; object-fit: cover;
+        }
+
+        .cta-link {
+            display: inline-block; margin-top: 15px; color: #fff; background: #ff3300;
+            padding: 8px 20px; text-decoration: none; font-weight: bold;
+            border-radius: var(--button_radius); text-transform: uppercase; font-size: 0.8rem;
+        }
+
+        .btn-back { display: block; width: fit-content; margin: 40px auto; color: #666; text-decoration: none; }
+        .btn-back:hover { color: var(--accent_color); }
+    </style>
+</head>
+<body>
+
+    <h1>HALL OF LULZ</h1>
+    <p class="subtitle">Официальный реестр обнуленных систем и наказанных мамонтов.</p>
+
+    <div class="trophy-grid" id="victim-container">
+        <p style="text-align: center; grid-column: 1/-1;">Загрузка списка смертников...</p>
+    </div>
+
+    <a href="/" class="btn-back">← Вернуться на главную</a>
+
+    <script>
+        async function loadVictims() {
+            const container = document.getElementById('victim-container');
+            try {
+                const res = await fetch('/api/get-victims');
+                const data = await res.json();
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Пока здесь пусто. Кто будет первым?</p>";
+                    return;
+                }
+
+                container.innerHTML = data.map(v => `
+                    <div class="trophy-card">
+                        <img src="${v.photo_url || 'https://via.placeholder.com/100?text=RIP'}" class="victim-img">
+                        <div style="color: var(--accent_color); font-weight: bold; text-transform: uppercase;">${v.name}</div>
+                        <p style="font-size: 0.9rem; color: #888;">${v.description}</p>
+                        <a href="${v.link || '#'}" target="_blank" class="cta-link">Досье</a>
+                    </div>
+                `).join('');
+            } catch (e) {
+                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #ff3300;'>Ошибка связи с API.</p>";
+            }
+        }
+        loadVictims();
+    </script>
+</body>
+  </html>
+  
