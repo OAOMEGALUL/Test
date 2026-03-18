@@ -1,29 +1,27 @@
-import { createClient } from '@supabase/supabase-js'
+const { createClient } = require('@supabase/supabase-js');
 
-// Используем именно те названия, которые у тебя в Vercel
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL, 
-  process.env.SUPABASE_ANON_KEY
-)
+// Этот код выведет ошибку в логи Vercel, если ключи пустые
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Ты че, даун? Только GET!' });
-  }
+if (!supabaseUrl || !supabaseKey) {
+  console.error("ОШИБКА: Ключи Supabase не найдены в Environment Variables!");
+}
 
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Разрешаем запросы отовосюду
+  
   try {
     const { data, error } = await supabase
-      .from('victims') // Убедись, что таблица называется именно victims
+      .from('victims')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: error.message });
-    }
-
-    return res.status(200).json(data);
+    if (error) throw error;
+    res.status(200).json(data);
   } catch (err) {
-    return res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: err.message, details: "Проверь таблицу victims и ключи в Vercel" });
   }
-}
+};
