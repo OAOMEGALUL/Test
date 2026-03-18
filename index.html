@@ -10,7 +10,7 @@
             --bg: #050505;
             --card-bg: #0f0f0f;
             --text: #e0e0e0;
-            --radius: 12px; /* Переменная для скругления */
+            --radius: 12px;
             --button_radius: 6px;
         }
 
@@ -53,7 +53,6 @@
             letter-spacing: -1px;
         }
 
-        /* Меню навигации */
         nav ul {
             display: flex;
             list-style: none;
@@ -70,9 +69,7 @@
             transition: 0.3s;
         }
 
-        nav a:hover {
-            color: var(--accent_color);
-        }
+        nav a:hover { color: var(--accent_color); }
 
         .btn-contact {
             background: var(--accent_color);
@@ -83,7 +80,7 @@
             text-transform: uppercase;
             transition: 0.2s;
             border: 1px solid var(--accent_color);
-            border-radius: var(--button_radius); /* Скругление кнопки */
+            border-radius: var(--button_radius);
         }
 
         .btn-contact:hover {
@@ -128,7 +125,7 @@
             background: var(--card-bg);
             padding: 35px;
             border: 1px solid #1a1a1a;
-            border-radius: var(--radius); /* Скругление карточек */
+            border-radius: var(--radius);
             transition: 0.3s;
         }
 
@@ -138,16 +135,13 @@
             color: var(--accent_color);
             margin-top: 0;
             text-transform: uppercase;
-            font-size: 1.4rem;
         }
-
-        .card p { color: #888; font-size: 0.95rem; }
 
         .warning-box {
             grid-column: 1 / -1;
             background: #150800;
             border: 2px solid var(--accent_color);
-            border-radius: var(--radius); /* Скругление варнинг бокса */
+            border-radius: var(--radius);
             padding: 50px 40px;
             text-align: center;
             margin-top: 10px;
@@ -156,7 +150,6 @@
         .warning-box h2 {
             font-size: 2.2rem;
             color: #ff3300;
-            margin: 0 0 15px 0;
             text-transform: uppercase;
         }
 
@@ -173,7 +166,7 @@
             font-weight: bold;
             font-size: 1.3rem;
             text-transform: uppercase;
-            border-radius: var(--button_radius); /* Скругление большой кнопки */
+            border-radius: var(--button_radius);
             transition: 0.3s;
         }
 
@@ -191,7 +184,6 @@
             border-top: 1px solid #111;
         }
 
-        /* Анимация печатающегося текста */
         .typewriter {
             border-right: 2px solid var(--accent_color);
             padding-right: 5px;
@@ -210,8 +202,8 @@
     <div class="logo">ОАО «Мегалюль»</div>
     <nav>
         <ul>
-            <li><a href="#">Главное</a></li>
-            <li><a href="#about">О нас</a></li>
+            <li><a href="/">Главное</a></li>
+            <li><a href="/hall.html">Доска позора</a></li>
             <li><a href="#locker">Винлокер</a></li>
         </ul>
     </nav>
@@ -247,7 +239,6 @@
         <p>Твой экран заблокирован, а ты сидишь и обтекаешь.</p>
         <p>Чтобы разблокать свою помойку, пиши сюда и надейся на милость хозяев</p>
         <a href="https://t.me/tccbog" class="cta-link">НАПИСАТЬ</a>
-        <p style="margin-top: 25px; font-size: 0.9rem; color: #555;">* Посмешище для RATеров — суровая реальность для тебя.</p>
     </div>
 </section>
 
@@ -260,42 +251,23 @@
     const lyulyaPhrases = ["Жертва.", "лох.", "получил пизды."];
 
     function setupTypewriter(elementId, phrases) {
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        let phraseIndex = 0, charIndex = 0, isDeleting = false;
         const element = document.getElementById(elementId);
-        const typeSpeed = 100;
-        const deleteSpeed = 50;
-        const pauseTime = 2000;
-
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            
-            if (isDeleting) {
-                element.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                element.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                isDeleting = true;
-                setTimeout(type, pauseTime);
+            element.textContent = isDeleting ? currentPhrase.substring(0, charIndex--) : currentPhrase.substring(0, charIndex++);
+            if (!isDeleting && charIndex === currentPhrase.length + 1) {
+                isDeleting = true; setTimeout(type, 2000);
             } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                setTimeout(type, 500);
+                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(type, 500);
             } else {
-                setTimeout(type, isDeleting ? deleteSpeed : typeSpeed);
+                setTimeout(type, isDeleting ? 50 : 100);
             }
         }
         type();
     }
-
     setupTypewriter('lyul-text', lyulPhrases);
     setupTypewriter('lyulya-text', lyulyaPhrases);
 </script>
-
 </body>
 </html>
