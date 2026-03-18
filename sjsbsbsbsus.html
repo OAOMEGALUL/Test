@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель Управления | ОАО МЕГАЛЮЛЬ</title>
+    <style>
+        body { background: #050505; color: #ff5500; font-family: monospace; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 0.8rem; }
+        input, textarea { 
+            width: 100%; padding: 10px; background: #0f0f0f; border: 1px solid #333; 
+            color: #fff; border-radius: 6px; box-sizing: border-box;
+        }
+        button { 
+            width: 100%; padding: 15px; background: #ff5500; border: none; 
+            color: #000; font-weight: bold; text-transform: uppercase; border-radius: 6px;
+        }
+        .status { margin-top: 20px; text-align: center; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">ADD NEW VICTIM</h2>
+    <form id="adminForm">
+        <div class="form-group">
+            <label>Ник мамонта:</label>
+            <input type="text" id="name" placeholder="@mammoth_dead" required>
+        </div>
+        <div class="form-group">
+            <label>Описание (за что наказан):</label>
+            <textarea id="description" rows="3" placeholder="Снесен за неуважение"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Ссылка на профиль:</label>
+            <input type="text" id="link" placeholder="https://t.me/...">
+        </div>
+        <div class="form-group">
+            <label>URL фото (аватарка):</label>
+            <input type="text" id="photo_url" placeholder="https://imgur.com/...">
+        </div>
+        <div class="form-group">
+            <label>Секретный ключ:</label>
+            <input type="password" id="secret_key" placeholder="Пароль админа" required>
+        </div>
+        <button type="submit">ОПУБЛИКОВАТЬ В HALL OF LULZ</button>
+    </form>
+    <div id="status" class="status"></div>
+
+    <script>
+        document.getElementById('adminForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('status');
+            status.innerText = "Отправка...";
+
+            const payload = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                link: document.getElementById('link').value,
+                photo_url: document.getElementById('photo_url').value,
+                secret_key: document.getElementById('secret_key').value
+            };
+
+            try {
+                const res = await fetch('/api/add-victim', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    status.style.color = "lime";
+                    status.innerText = "Успешно! Мамонт на доске.";
+                    document.getElementById('adminForm').reset();
+                } else {
+                    status.style.color = "red";
+                    status.innerText = "Ошибка: " + result.error;
+                }
+            } catch (err) {
+                status.innerText = "Ошибка сети!";
+            }
+        };
+    </script>
+</body>
+</html>
+
