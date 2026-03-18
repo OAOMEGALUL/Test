@@ -69,27 +69,58 @@
             const container = document.getElementById('victim-container');
             try {
                 const res = await fetch('/api/get-victims');
+                if (!res.ok) throw new Error('API error');
                 const data = await res.json();
                 
-                if (!data || data.length === 0) {
-                    container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Пока здесь пусто. Кто будет первым?</p>";
+                if (!data || !Array.isArray(data) || data.length === 0) {
+                    const emptyMsg = document.createElement('p');
+                    emptyMsg.style.cssText = 'grid-column: 1/-1; text-align: center;';
+                    emptyMsg.textContent = 'Пока здесь пусто. Кто будет первым?';
+                    container.innerHTML = '';
+                    container.appendChild(emptyMsg);
                     return;
                 }
 
-                container.innerHTML = data.map(v => `
-                    <div class="trophy-card">
-                        <img src="${v.photo_url || 'https://via.placeholder.com/100?text=RIP'}" class="victim-img">
-                        <div style="color: var(--accent_color); font-weight: bold; text-transform: uppercase;">${v.name}</div>
-                        <p style="font-size: 0.9rem; color: #888;">${v.description}</p>
-                        <a href="${v.link || '#'}" target="_blank" class="cta-link">Досье</a>
-                    </div>
-                `).join('');
+                container.innerHTML = ''; 
+                data.forEach(v => {
+                    const card = document.createElement('div');
+                    card.className = 'trophy-card';
+
+                    const img = document.createElement('img');
+                    img.src = v.photo_url || 'https://via.placeholder.com/100?text=RIP';
+                    img.className = 'victim-img';
+                    img.alt = 'victim';
+
+                    const nameDiv = document.createElement('div');
+                    nameDiv.style.cssText = 'color: var(--accent_color); font-weight: bold; text-transform: uppercase;';
+                    nameDiv.textContent = v.name;
+
+                    const desc = document.createElement('p');
+                    desc.style.cssText = 'font-size: 0.9rem; color: #888;';
+                    desc.textContent = v.description;
+
+                    const link = document.createElement('a');
+                    link.href = v.link || '#';
+                    link.target = '_blank';
+                    link.className = 'cta-link';
+                    link.textContent = 'Досье';
+
+                    card.appendChild(img);
+                    card.appendChild(nameDiv);
+                    card.appendChild(desc);
+                    card.appendChild(link);
+
+                    container.appendChild(card);
+                });
             } catch (e) {
-                container.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: #ff3300;'>Ошибка связи с API.</p>";
+                container.innerHTML = '';
+                const errorMsg = document.createElement('p');
+                errorMsg.style.cssText = 'grid-column: 1/-1; text-align: center; color: #ff3300;';
+                errorMsg.textContent = 'Ошибка связи с API.';
+                container.appendChild(errorMsg);
             }
         }
         loadVictims();
     </script>
 </body>
-  </html>
-  
+</html>
