@@ -2,30 +2,35 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HALL OF LULZ | OAO MEGALUL</title>
     <style>
         :root {
-            --accent_color: #ff5500;
+            --accent: #ff5500;
             --bg: #050505;
             --card-bg: #0f0f0f;
             --text: #e0e0e0;
             --radius: 12px;
-            --button_radius: 6px;
         }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
-            font-family: 'Consolas', 'Courier New', monospace;
+            font-family: 'Consolas', monospace;
             margin: 0;
-            padding: 40px 8%;
+            padding: 20px 5%; /* Адаптивные отступы */
         }
 
-        h1 { color: var(--accent_color); text-transform: uppercase; text-align: center; font-size: 2.5rem; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 40px; }
+        h1 { color: var(--accent); text-transform: uppercase; text-align: center; font-size: clamp(1.5rem, 8vw, 2.5rem); margin-top: 40px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 40px; font-size: 0.9rem; }
 
-        .trophy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .trophy-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
         .trophy-card {
             background: var(--card-bg);
@@ -36,21 +41,30 @@
             transition: 0.3s;
         }
 
-        .trophy-card:hover { border-color: var(--accent_color); transform: translateY(-5px); }
+        .trophy-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
         .victim-img {
-            width: 100px; height: 100px; border-radius: 50%;
-            border: 2px solid var(--accent_color); margin-bottom: 15px; object-fit: cover;
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 2px solid var(--accent); margin-bottom: 15px; object-fit: cover;
         }
+
+        .victim-name { color: var(--accent); font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+        .victim-desc { font-size: 0.85rem; color: #888; margin-bottom: 15px; min-height: 40px; }
 
         .cta-link {
-            display: inline-block; margin-top: 15px; color: #fff; background: #ff3300;
-            padding: 8px 20px; text-decoration: none; font-weight: bold;
-            border-radius: var(--button_radius); text-transform: uppercase; font-size: 0.8rem;
+            display: inline-block; color: #fff; background: #ff3300;
+            padding: 10px 25px; text-decoration: none; font-weight: bold;
+            border-radius: 6px; text-transform: uppercase; font-size: 0.8rem;
+            width: 100%; /* На мобиле кнопка во всю ширину карточки */
         }
 
-        .btn-back { display: block; width: fit-content; margin: 40px auto; color: #666; text-decoration: none; }
-        .btn-back:hover { color: var(--accent_color); }
+        .btn-back { display: block; width: fit-content; margin: 40px auto; color: #666; text-decoration: none; font-size: 0.9rem; }
+        .btn-back:hover { color: var(--accent); }
+        
+        /* Фикс для совсем маленьких экранов */
+        @media (max-width: 350px) {
+            .trophy-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -65,59 +79,38 @@
     <a href="/" class="btn-back">← Вернуться на главную</a>
 
     <script>
+        // Функция для безопасного вывода текста (защита от XSS)
+        function escapeHTML(str) {
+            if (!str) return '';
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+
         async function loadVictims() {
             const container = document.getElementById('victim-container');
             try {
                 const res = await fetch('/api/get-victims');
-                if (!res.ok) throw new Error('API error');
+                if (!res.ok) throw new Error();
                 const data = await res.json();
                 
-                if (!data || !Array.isArray(data) || data.length === 0) {
-                    const emptyMsg = document.createElement('p');
-                    emptyMsg.style.cssText = 'grid-column: 1/-1; text-align: center;';
-                    emptyMsg.textContent = 'Пока здесь пусто. Кто будет первым?';
-                    container.innerHTML = '';
-                    container.appendChild(emptyMsg);
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Пока здесь пусто. Кто будет первым?</p>';
                     return;
                 }
 
-                container.innerHTML = ''; 
-                data.forEach(v => {
-                    const card = document.createElement('div');
-                    card.className = 'trophy-card';
+                // Отрисовываем всё разом через шаблон, но с фильтрацией текста
+                container.innerHTML = data.map(v => `
+                    <div class="trophy-card">
+                        <img src="${escapeHTML(v.photo_url) || 'https://via.placeholder.com/100?text=RIP'}" class="victim-img" alt="RIP">
+                        <div class="victim-name">${escapeHTML(v.name)}</div>
+                        <p class="victim-desc">${escapeHTML(v.description)}</p>
+                        <a href="${escapeHTML(v.link) || '#'}" target="_blank" class="cta-link">Досье</a>
+                    </div>
+                `).join('');
 
-                    const img = document.createElement('img');
-                    img.src = v.photo_url || 'https://via.placeholder.com/100?text=RIP';
-                    img.className = 'victim-img';
-                    img.alt = 'victim';
-
-                    const nameDiv = document.createElement('div');
-                    nameDiv.style.cssText = 'color: var(--accent_color); font-weight: bold; text-transform: uppercase;';
-                    nameDiv.textContent = v.name;
-
-                    const desc = document.createElement('p');
-                    desc.style.cssText = 'font-size: 0.9rem; color: #888;';
-                    desc.textContent = v.description;
-
-                    const link = document.createElement('a');
-                    link.href = v.link || '#';
-                    link.target = '_blank';
-                    link.className = 'cta-link';
-                    link.textContent = 'Досье';
-
-                    card.appendChild(img);
-                    card.appendChild(nameDiv);
-                    card.appendChild(desc);
-                    card.appendChild(link);
-
-                    container.appendChild(card);
-                });
             } catch (e) {
-                container.innerHTML = '';
-                const errorMsg = document.createElement('p');
-                errorMsg.style.cssText = 'grid-column: 1/-1; text-align: center; color: #ff3300;';
-                errorMsg.textContent = 'Ошибка связи с API.';
-                container.appendChild(errorMsg);
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ff3300;">Ошибка связи с API.</p>';
             }
         }
         loadVictims();
