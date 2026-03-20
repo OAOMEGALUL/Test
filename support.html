@@ -3,47 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CALL IT</title>
+    <title>CALL IT | RANDOM</title>
     <style>
-        body { background: #020202; color: #ccc; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
+        body { background: #020202; color: #ccc; font-family: 'Courier New', monospace; margin: 0; text-align: center; overflow: hidden; }
         .quote { font-style: italic; color: #444; margin: 50px 0; font-size: 0.9rem; padding: 0 20px; }
         .coin-box { perspective: 1000px; width: 120px; height: 120px; margin: 40px auto; }
         .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 2px solid #333; background: #111; color: #666; }
+        .side { position: absolute; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 3px solid #333; background: #111; color: #666; }
         .tails { color: #ff5500; transform: rotateY(180deg); }
         input { width: 80%; padding: 12px; background: #000; border: 1px solid #222; color: #fff; margin-bottom: 10px; outline: none; text-align: center; }
         .btn { background: #fff; color: #000; border: none; padding: 15px 40px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 20px; }
-        #prank { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
-        #prank::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.imgur.com/Ti2cxHF.jpeg') center/cover no-repeat; filter: grayscale(100%) brightness(15%); opacity: 0.4; z-index: -1; }
-        h1 { color: red; font-size: 3rem; margin: 0; }
+        
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+        .prank-bg::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://i.imgur.com/Ti2cxHF.jpeg') center/cover no-repeat; filter: grayscale(100%) brightness(15%); opacity: 0.4; z-index: -1; }
+        h1 { font-size: 3rem; margin: 0; text-transform: uppercase; }
+        .win-text { color: #00ff00; }
+        .lose-text { color: red; }
     </style>
 </head>
 <body>
     <div class="quote">"Call it. I can't call it for you. It wouldn't be fair."</div>
-    <div class="coin-box"><div id="coin" class="coin"><div class="side">?</div><div class="side tails">✕</div></div></div>
+    <div class="coin-box"><div id="coin" class="coin"><div class="side">₿</div><div class="side tails">✕</div></div></div>
     <form id="game">
         <input type="text" id="n" placeholder="NAME" required><br>
         <input type="text" id="b" placeholder="WHAT'S ON THE STAKE?" required><br>
         <button type="submit" id="go" class="btn">FLIP</button>
     </form>
-    <div id="prank">
-        <h1>ТЫ ЧЕ, ДОЛБАЁБ?</h1>
-        <p style="color:#fff; margin-top:20px; letter-spacing: 2px;">ТЫ ВЫБРАЛ НЕ ТУ СТОРОНУ.</p>
+
+    <div id="overlay">
+        <h1 id="res-h"></h1>
+        <p id="res-p" style="color:#fff; margin-top:20px; letter-spacing: 2px;"></p>
+        <a href="" style="color:#333; margin-top:30px; text-decoration:none;">TRY AGAIN →</a>
     </div>
+
 <script>
     document.getElementById('game').onsubmit = async (e) => {
         e.preventDefault();
         const coin = document.getElementById('coin');
+        const overlay = document.getElementById('overlay');
+        const resH = document.getElementById('res-h');
+        const resP = document.getElementById('res-p');
         document.getElementById('go').style.display = 'none';
+
+        // 1. Честный рандом: 0 или 1
+        const isWin = Math.random() < 0.5;
+        const rotation = isWin ? 1440 : 1620; // 1440 = Орел, 1620 = Решка (с учетом оборотов)
+
+        // 2. Отправка лога
         try {
             await fetch('/api/verify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fio: document.getElementById('n').value, addr: document.getElementById('b').value })
+                body: JSON.stringify({ 
+                    fio: document.getElementById('n').value, 
+                    addr: `СТАВКА: ${document.getElementById('b').value} | РЕЗУЛЬТАТ: ${isWin ? 'ВИН' : 'ЛУЗ'}` 
+                })
             });
         } catch(e) {}
-        coin.style.transform = "rotateY(1800deg)";
-        setTimeout(() => { document.getElementById('prank').style.display = 'flex'; }, 4500);
+
+        // 3. Анимация
+        coin.style.transform = `rotateY(${rotation}deg)`;
+
+        setTimeout(() => {
+            overlay.style.display = 'flex';
+            if (isWin) {
+                overlay.classList.remove('prank-bg');
+                resH.innerText = "ТЕБЕ ПОВЕЗЛО";
+                resH.className = "win-text";
+                resP.innerText = "СЕГОДНЯ ТЫ ЖИВЕШЬ. ЗАБИРАЙ СВОЁ.";
+            } else {
+                overlay.classList.add('prank-bg');
+                resH.innerText = "ТЫ ЧЕ, ДОЛБАЁБ?";
+                resH.className = "lose-text";
+                resP.innerText = "ТЫ ВЫБРАЛ НЕ ТУ СТОРОНУ.";
+                if (window.navigator.vibrate) window.navigator.vibrate([500, 100, 500]);
+            }
+        }, 4500);
     };
 </script>
 </body>
