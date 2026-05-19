@@ -2,67 +2,581 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ОАО «Мегалюль» | SQUAD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОАО МЕГАЛЮЛЬ — Официальное представительство</title>
     <style>
-        :root { --accent: #ff5500; --bg: #050505; --card: #0f0f0f; --text: #e0e0e0; --radius: 12px; }
-        * { box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Consolas', monospace; margin: 0; line-height: 1.5; overflow-x: hidden; }
-        header { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); background: rgba(5,5,5,0.9); position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 900; color: var(--accent); text-transform: uppercase; font-size: clamp(1rem, 4vw, 1.5rem); }
-        .btn-hall { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 15px; text-decoration: none; font-weight: bold; border-radius: 6px; text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; }
-        .btn-hall:hover { background: var(--accent); color: #000; }
-        .hero { padding: 60px 5%; background: radial-gradient(circle at 80% 20%, #251000 0%, #050505 50%); text-align: center; }
-        .hero h1 { font-size: clamp(1.8rem, 8vw, 4rem); text-transform: uppercase; margin: 0; }
-        .hero h1 span { color: var(--accent); }
-        .hero p { font-size: 1.1rem; max-width: 600px; color: #888; margin: 20px auto; border-left: 3px solid var(--accent); padding-left: 15px; text-align: left; }
-        .grid { padding: 20px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        .card { background: var(--card); padding: 25px; border: 1px solid #1a1a1a; border-radius: var(--radius); }
-        .card h3 { color: var(--accent); margin-top: 0; text-transform: uppercase; }
-        .warning-box { grid-column: 1 / -1; background: #150800; border: 2px solid var(--accent); border-radius: var(--radius); padding: 40px 20px; text-align: center; }
-        .cta-link { display: inline-block; margin-top: 20px; color: #fff; background: #ff3300; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 6px; width: 100%; max-width: 300px; text-transform: uppercase; }
-        .blink { animation: blinker 0.8s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
-        footer { padding: 30px; text-align: center; color: #333; font-size: 0.8rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #050505;
+            color: #00ff66;
+            font-family: 'Fira+Code', monospace;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Задник с видео */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.25;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Эффект старого ЭЛТ монитора поверх всего */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 99999;
+            opacity: 0.6;
+            pointer-events: none;
+            background-size: 100% 4px, 6px 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.25);
+            background: rgba(12, 12, 12, 0.9);
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            border-bottom: 2px dashed #ff00ff;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffff00;
+            text-shadow: 0 0 10px #ffff00;
+            animation: blink 1.5s infinite alternate;
+        }
+
+        .status-panel {
+            font-size: 0.9rem;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            padding: 5px 10px;
+            background: rgba(0, 255, 102, 0.1);
+            text-transform: uppercase;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .matrix-bg {
+            font-size: 0.85rem;
+            line-height: 1.3;
+            color: #00ffaa;
+            height: 140px;
+            overflow-y: hidden;
+            margin: 15px 0;
+            border: 1px solid #ff00ff;
+            padding: 8px;
+            background: #020202;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            border: 1px solid #00ff66;
+            background: #111;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 15px rgba(0, 255, 102, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            border-bottom: 1px solid #ff00ff;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            color: #ffff00;
+        }
+
+        .services-list {
+            list-style: none;
+        }
+
+        .services-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .services-list li::before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .services-list strong {
+            color: #ff00ff;
+            font-size: 1.05rem;
+        }
+
+        .btn {
+            background: #ff00ff;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: 'Fira+Code', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: inline-block;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.4);
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #00ff66;
+            color: #000;
+            box-shadow: 0 0 15px #00ff66;
+        }
+
+        .quote-box {
+            background: #000;
+            border: 1px solid #ff3333;
+            padding: 15px;
+            margin-top: 10px;
+            min-height: 80px;
+            font-size: 0.9rem;
+            color: #ff3333;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        /* Плашка звука */
+        .audio-notice {
+            background: #ffff00;
+            color: #000;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid #000;
+            text-transform: uppercase;
+        }
+
+        /* Кнопка вызова мини-игры в углу */
+        .game-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #ff00ff;
+            color: #fff;
+            border: 2px solid #ffff00;
+            padding: 15px 20px;
+            font-family: 'Fira+Code', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+            transition: all 0.2s ease;
+        }
+
+        .game-trigger-btn:hover {
+            background: #00ff66;
+            color: #000;
+            box-shadow: 0 0 25px #00ff66;
+            transform: scale(1.05);
+        }
+
+        /* Модальное окно мини-игры (Оверлей) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            width: 100%;
+            max-width: 460px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #ff3333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .modal-close:hover {
+            color: #ffff00;
+        }
+
+        /* Зона мини-игры внутри модалки */
+        .game-zone {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            border: 2px dashed #ff00ff;
+            background: #000;
+            overflow: hidden;
+            cursor: crosshair;
+            user-select: none;
+        }
+
+        .game-target {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .fluid-drop {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -50%);
+            animation: splat 0.2s ease-out forwards;
+        }
+
+        .fluid-streak {
+            position: absolute;
+            background: linear-gradient(to bottom, transparent, #ffffff);
+            pointer-events: none;
+            opacity: 0.9;
+            width: 6px;
+            border-radius: 3px;
+            transform: translateX(-50%);
+        }
+
+        @keyframes splat {
+            0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        footer {
+            margin-top: 20px;
+            border-top: 2px dashed #ff00ff;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #444;
+        }
+
+        .highlight {
+            color: #ff00ff;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-<header>
-    <div class="logo">ОАО «Мегалюль»</div>
-    <a href="/hall.html" class="btn-hall">Hall of Lulz</a>
-</header>
-<section class="hero">
-    <h1>ЛЮЛЬ — ЭТО <span id="t1" style="color:var(--accent)"></span></h1>
-    <p>Сквад который ебет школьников. <br>Не качай где попало. <br>Нарвался на нас? Плати.</p>
-</section>
-<section class="grid">
-    <div class="card">
-        <h3>Кого мы наказываем?</h3>
-        <p>Дрочеров, ратеров, долбаёбов / не выполнение наших условий. Если это описание подходит для вас, то ваша система будет скомпрометирована.</p>
+
+<!-- Задний фон с видео -->
+<div class="video-background">
+    <video id="bg-video" src="https://i.imgur.com/5KJUwVg.mp4" loop muted playsinline></video>
+</div>
+
+<!-- Кнопка вызова игры -->
+<button class="game-trigger-btn" onclick="toggleGameModal(true)">💦 Открыть Cum Target</button>
+
+<!-- Модалка с игрой -->
+<div class="modal-overlay" id="game-modal" onclick="closeModalOnOverlay(event)">
+    <div class="modal-content">
+        <span class="modal-close" onclick="toggleGameModal(false)">&times;</span>
+        <div class="card-title" style="margin-top: 10px;">CUM TARGET SIMULATOR v1.2</div>
+        <p style="font-size: 0.85rem; margin-bottom: 12px; color: #ffff00;">Кликай по мишени, чтобы залить её плотным слоем белой субстанции:</p>
+        
+        <div class="game-zone" id="cum-zone" onclick="launchFluid(event)">
+            <img class="game-target" id="target-img" src="https://i.imgur.com/m96X53u.jpeg" alt="Мишень">
+        </div>
+        
+        <button class="btn" style="background:#ff3333; margin-top: 15px;" onclick="clearTarget()">Очистить мишень от позора</button>
+        <button class="btn" style="background:#444; margin-top: 10px;" onclick="toggleGameModal(false)">Закрыть окно</button>
     </div>
-    <div class="card">
-        <h3>SOFTWARE.</h3>
-        <p>Не ной в лс, что мы XWorm юзеры или WebRAT. У нас полностью кастомная ратка для серьезных задач.</p>
+</div>
+
+<div class="container">
+    <div class="audio-notice" id="audio-btn" onclick="enableAudio()">
+        🔊 КЛИКНИ СЮДА, ЧТОБЫ ПОДПИСАТЬСЯ НА ЗВУК С ФОНОВОГО ВИДЕО
     </div>
-    <div class="card">
-        <h3>BOOTKIT.</h3>
-        <p>Попытаешься снести винду? Неа. BootKit принудительно вернет наш билд в систему.</p>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo">ОАО МЕГАЛЮЛЬ SQUAD</div>
+            <div class="status-panel">АНСАР, МАТЬ ТВОЮ, ЛОГИ ГДЕ?!</div>
+        </div>
+        
+        <div class="matrix-bg" id="log-monitor">
+            [СИСТЕМА] Инициализация протоколов тотального глумления...<br>
+            [ПАРСЕР] Сканируем рабочий стол Ансара. Найдено папок с гей-порно: 42 шт.<br>
+            [УСПЕХ] Мать Ансара зашла в комнату и выдала ему пизды за скачивание вирусов.
+        </div>
+    </header>
+
+    <div class="grid">
+        <main>
+            <div class="card">
+                <div class="card-title">Кто мы такие и нахуя мы здесь?</div>
+                <p style="margin-bottom: 12px; line-height: 1.6;">
+                    Добро пожаловать в официальный хаб <span class="highlight">ОАО МЕГАЛЮЛЬ</span>. Наша специализация — чистый, нефильтрованный угар, тотальный ратинг, продажа логов и доведение Ансара до белого каления. Мы сожгли старый сайт к хуям, потому что он был слишком приличным.
+                </p>
+                <p style="line-height: 1.6;">
+                    Если ты Ансар — закрой вкладку и беги жаловаться маме. Если ты мамонт, пришедший за софтом — твои сессии уже улетают на наш сервер. Бизнес, ничего личного.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Наш основной профиль</div>
+                <ul class="services-list">
+                    <li><strong>Беспощадный Ратинг:</strong> Мы — просто ратеры и троллеры, которые делают свою работу красиво. Давим морально, технически и позиционно. Наш софт работает быстрее, чем цель успевает придумать тупую отмазку.</li>
+                    <li><strong>Массовый сбор логов:</strong> Выкачиваем логи подчистую со всех, кто запускает наши сборки. Дискорд-токены, куки авторизации и приватные сессии улетают в закат за секунды.</li>
+                    <li><strong>Менеджмент и продажа:</strong> Собранный материал не лежит без дела — сортируем по валидности и гарантированно <span class="highlight">продаем на бирже</span>, конвертируя чужую тупость в чистый капитал.</li>
+                    <li><strong>Слежка за Ансаром:</strong> Логируем каждое его действие в сети, мониторим скрытые папки на ПК и отправляем регулярные отчеты его матушке лично в руки.</li>
+                </ul>
+            </div>
+        </main>
+
+        <aside>
+            <!-- Твой текст унижения вместо консоли -->
+            <div class="card">
+                <div class="card-title">Статус операции по Ансару</div>
+                <p style="font-size: 0.85rem; margin-bottom: 8px; color: #ff00ff;">Текущее состояние цели:</p>
+                <div class="quote-box" style="color: #00ff66; border-color: #00ff66;">
+=== ЧЕПУШИЛА СЫН @xzqov @atingbar ===
+FULL NAME: Abdrazakov Ansar Rustamovich;
+DATE BIRTH: 19.07.2009;
+PHONE NUMBERS: +4917642798303;
+TELEGRAM ID: 7006131048, 5600561222;
+VK GROUP: https://vk.ru/club227221267;
+VK PROFILE: https://vk.ru/morty_sinner, https://vk.ru/id447348262;
+NEW HOME ADDRESS: Bergstraße 3, 70734 Fellbach, Deutschland;
+OLD HOME ADDRESS: 106 Gogolya St, Apt 56, Sterlitamak, Republic of Bashkortostan, Russia, 453130;
+
+=== МАТУХА @alairy19 @alenalawyer88 ===
+FULL NAME: Abdrazakova Alena Olegovna;
+DATE BIRTH: 08.11.1988;
+PHONE NUMBERS: +79104242757;
+PASSPORT ID: 4518199617
+EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Генератор унижения Ансара</div>
+                <p style="font-size: 0.85rem; margin-bottom: 12px;">Нажми кнопку, чтобы выдать базу:</p>
+                <button class="btn" onclick="generateAnsarFact()">Сгенерировать базу</button>
+                <div class="quote-box" id="ansar-quote">Нажмите кнопку для инициализации...</div>
+            </div>
+        </aside>
     </div>
-    <div class="warning-box">
-        <h2 class="blink">СЛОВИЛ ЛОКЕР, ЕБАНЫЙ ДАУН?</h2>
-        <p>Твой экран заблокирован, а ты сидишь и обтекаешь. Пиши хозяевам.</p>
-        <a href="https://t.me/tccbog" class="cta-link">НАПИСАТЬ</a>
-    </div>
-</section>
+
+    <footer>
+        &copy; 2026 ОАО МЕГАЛЮЛЬ SQUAD. Все логи проданы, Ансар слит, его мать в курсе. Разработано Fox для Воксель, Кирилл, Александр, Кофа.
+    </footer>
+</div>
+
 <script>
-    const ph = ["СМЕХ.", "ВЛАСТЬ.", "ХАОС."]; let i=0, j=0, d=false;
-    function type() {
-        const el = document.getElementById('t1'); const c = ph[i];
-        el.innerText = d ? c.substring(0, j--) : c.substring(0, j++);
-        if(!d && j > c.length) { d=true; setTimeout(type, 1500); }
-        else if(d && j===0) { d=false; i=(i+1)%ph.length; setTimeout(type, 500); }
-        else { setTimeout(type, d ? 50 : 100); }
-    } type();
+    // Твой личный текст для унижения в генераторе ниже
+    const YOUR_CUSTOM_TEXT = `[БАЗИРОВАННЫЙ СЛИВ]: Ансар умолял Вокселя, Кирилла, Александра и Кофу не сливать его архивы, но логи уже улетели перекупщикам на маркет. Мы — ратеры и троллеры, и Ансар для нас просто очередной мамонт, отлетевший нахуй под общий угар!`;
+
+    // Управление модальным окном
+    function toggleGameModal(show) {
+        const modal = document.getElementById('game-modal');
+        modal.style.display = show ? 'flex' : 'none';
+    }
+
+    function closeModalOnOverlay(event) {
+        if (event.target.id === 'game-modal') {
+            toggleGameModal(false);
+        }
+    }
+
+    // Снятие мута с видоса по клику на плашку
+    function enableAudio() {
+        const video = document.getElementById('bg-video');
+        video.muted = false;
+        video.play().catch(err => console.log("Ошибка воспроизведения: ", err));
+        document.getElementById('audio-btn').style.display = 'none';
+    }
+
+    // Попытка стартануть видео в фоне без звука сразу при загрузке
+    window.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('bg-video');
+        video.play().catch(() => {});
+    });
+
+    // Бегущие треш-логи в шапке
+    const funLogs = [
+        "[ЛОГ] Ансар скачал 'чит на робуксы'. Его мать заходит в комнату с ремнём.",
+        "[ПАРСЕР] Обнаружена вкладка 'смотреть порно для даунов без регистрации'. Ансар, ты спалился.",
+        "[МЕГАЛЮЛЬ] Из логов Ансара вытащен пароль от его аккаунта в Роблоксе: 'ansar2015super'.",
+        "[ТРОЛЛИНГ] Мать Ансара забанила его в домашней подсети Wi-Fi за неуспеваемость.",
+        "[РАТИНГ] Ансар пытается доказать в комментариях, что он не мамонт. Уровень горения зашкаливает.",
+        "[УСПЕХ] Куки авторизации Ансара улетели на маркет. Считаем копейки с его баланса Steam.",
+        "[СИСТЕМА] Запускаем скрытый скрипт, который отправляет матери Ансара его историю браузера.",
+        "[ИНФО] Ансар плачет в войсе Дискорда, потому что у него угнали аккаунт с кастомным скином.",
+        "[БАЗА] Мать Ансара заявила, что ОАО МЕГАЛЮЛЬ — лучшие программисты в СНГ.",
+        "[ОШИБКА] Не удалось найти мозг в процессе ansar.exe. Процесс завершен аварийно."
+    ];
+    
+    const monitor = document.getElementById('log-monitor');
+    setInterval(() => {
+        const randomLog = funLogs[Math.floor(Math.random() * funLogs.length)];
+        const time = new Date().toLocaleTimeString();
+        monitor.innerHTML += `<br>[${time}] ${randomLog}`;
+        monitor.scrollTop = monitor.scrollHeight;
+        
+        let lines = monitor.innerHTML.split('<br>');
+        if(lines.length > 8) {
+            lines.shift();
+            monitor.innerHTML = lines.join('<br>');
+        }
+    }, 2500);
+
+    // Функция генерации текста унижения по кнопке
+    function generateAnsarFact() {
+        const box = document.getElementById('ansar-quote');
+        box.innerHTML = YOUR_CUSTOM_TEXT;
+        
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance("Ансар слит нахуй");
+            utterance.rate = 1.4;
+            utterance.volume = 0.6;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // Механика мини-игры (Слизь/Cum)
+    function launchFluid(event) {
+        const zone = document.getElementById('cum-zone');
+        const rect = zone.getBoundingClientRect();
+        
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
+
+        const mainSize = Math.floor(Math.random() * 25) + 20;
+
+        // Основной шлепок
+        const drop = document.createElement('div');
+        drop.className = 'fluid-drop';
+        drop.style.left = `${clickX}px`;
+        drop.style.top = `${clickY}px`;
+        drop.style.width = `${mainSize}px`;
+        drop.style.height = `${mainSize}px`;
+        
+        drop.style.borderRadius = `${Math.random()*40+30}% ${Math.random()*40+30}% ${Math.random()*40+30}% ${Math.random()*40+30}%`;
+        zone.appendChild(drop);
+
+        // Подтеки вниз
+        if (Math.random() > 0.3) {
+            const streak = document.createElement('div');
+            streak.className = 'fluid-streak';
+            streak.style.left = `${clickX + (Math.random() * 10 - 5)}px`;
+            streak.style.top = `${clickY + (mainSize / 3)}px`;
+            const streakHeight = Math.floor(Math.random() * 50) + 20;
+            streak.style.height = `${streakHeight}px`;
+            
+            streak.style.transition = 'height 1.5s ease-out';
+            zone.appendChild(streak);
+            
+            setTimeout(() => {
+                streak.style.height = `${streakHeight + Math.random()*30}px`;
+            }, 50);
+        }
+
+        // Брызги вокруг
+        const splatCount = Math.floor(Math.random() * 4) + 2;
+        for (let i = 0; i < splatCount; i++) {
+            const microDrop = document.createElement('div');
+            microDrop.className = 'fluid-drop';
+            const offsetX = (Math.random() * 60 - 30);
+            const offsetY = (Math.random() * 60 - 30);
+            const microSize = Math.floor(Math.random() * 8) + 4;
+
+            microDrop.style.left = `${clickX + offsetX}px`;
+            microDrop.style.top = `${clickY + offsetY}px`;
+            microDrop.style.width = `${microSize}px`;
+            microDrop.style.height = `${microSize}px`;
+            zone.appendChild(microDrop);
+        }
+    }
+
+    // Очистка мишени
+    function clearTarget() {
+        const zone = document.getElementById('cum-zone');
+        const elements = zone.querySelectorAll('.fluid-drop, .fluid-streak');
+        elements.forEach(el => el.remove());
+    }
 </script>
 </body>
 </html>
