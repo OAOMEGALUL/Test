@@ -201,18 +201,46 @@
             line-height: 1.5;
         }
 
-        /* Плашка звука */
-        .audio-notice {
-            background: #ffff00;
-            color: #000;
-            padding: 8px;
-            text-align: center;
+        /* Стильные контакты */
+        .contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border: 1px solid #ff00ff;
+            background: #000;
+            color: #ff00ff;
+            text-decoration: none;
             font-weight: bold;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            cursor: pointer;
-            border: 1px solid #000;
             text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.2);
+        }
+
+        .contact-link.tg {
+            border-color: #00ff66;
+            color: #00ff66;
+            box-shadow: 0 0 8px rgba(0, 255, 102, 0.2);
+        }
+
+        .contact-link:hover {
+            background: #ff00ff;
+            color: #fff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .contact-link.tg:hover {
+            background: #00ff66;
+            color: #000;
+            box-shadow: 0 0 15px #00ff66;
         }
 
         /* Кнопка вызова мини-игры в углу */
@@ -240,7 +268,7 @@
             transform: scale(1.05);
         }
 
-        /* Модальное окно мини-игры (Оверлей) */
+        /* Модалка мини-игры */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -280,7 +308,6 @@
             color: #ffff00;
         }
 
-        /* Зона мини-игры внутри модалки */
         .game-zone {
             position: relative;
             width: 100%;
@@ -322,6 +349,20 @@
         @keyframes splat {
             0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.5; }
             100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Плашка звука */
+        .audio-notice {
+            background: #ffff00;
+            color: #000;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid #000;
+            text-transform: uppercase;
         }
 
         footer {
@@ -407,7 +448,7 @@
         </main>
 
         <aside>
-            <!-- Твой текст унижения вместо консоли -->
+            <!-- Текст унижения -->
             <div class="card">
                 <div class="card-title">Статус операции по Ансару</div>
                 <p style="font-size: 0.85rem; margin-bottom: 8px; color: #ff00ff;">Текущее состояние цели:</p>
@@ -431,6 +472,15 @@ EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;
                 </div>
             </div>
 
+            <!-- Раздел контактов -->
+            <div class="card">
+                <div class="card-title">Наши контакты</div>
+                <div class="contacts-list">
+                    <a href="https://discord.gg/GcmUQfhWg6" target="_blank" class="contact-link">👾 НАШ DISCORD SERVER</a>
+                    <a href="https://t.me/megaluloao" target="_blank" class="contact-link tg">✈️ НАШ TELEGRAM КАНАЛ</a>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-title">Генератор унижения Ансара</div>
                 <p style="font-size: 0.85rem; margin-bottom: 12px;">Нажми кнопку, чтобы выдать базу:</p>
@@ -441,13 +491,25 @@ EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;
     </div>
 
     <footer>
-        &copy; 2026 ОАО МЕГАЛЮЛЬ SQUAD. Все логи проданы, Ансар слит, его мать в курсе. Разработано Fox для Воксель, Кирилл, Александр, Кофа.
+        &copy; 2026 ОАО МЕГАЛЮЛЬ SQUAD. Все логи проданы, Ансар слит, его мать в курсе. Разработано rv0x3l для Воксель, Кирилл, Александр, Кофа.
     </footer>
 </div>
 
 <script>
-    // Твой личный текст для унижения в генераторе ниже
-    const YOUR_CUSTOM_TEXT = `[БАЗИРОВАННЫЙ СЛИВ]: Ансар умолял Вокселя, Кирилла, Александра и Кофу не сливать его архивы, но логи уже улетели перекупщикам на маркет. Мы — ратеры и троллеры, и Ансар для нас просто очередной мамонт, отлетевший нахуй под общий угар!`;
+    // Массив трешовых баз для генератора (10 новых уничтожений + основа)
+    const ansarFacts = [
+        `[БАЗИРОВАННЫЙ СЛИВ]: Ансар умолял Вокселя, Кирилла, Александра и Кофу не сливать его архивы, но логи уже улетели перекупщикам на маркет. Мы — ратеры и троллеры, и Ансар для нас просто очередной мамонт, отлетевший нахуй под общий угар!`,
+        `[ЛОГ УНИЖЕНИЯ]: Ансар попытался пропатчить наш стиллер через Блокнот, но в итоге скинул Вокселю пароли от маминой банковской карты. Теперь сквад покупает дедики за счет его обедов.`,
+        `[РАТИНГ ПО ФАКТУ]: Кирилл зашел в сессию Ансара и обнаружил, что тот хранит текстовый файл "как_стать_хакером_за_5_минут.txt". Ансар, твой предел — это кликать мышкой по кнопкам в Роблоксе, расслабься.`,
+        `[ТОТАЛЬНЫЙ СЛИВ]: Александр лично отправил полную выписку логов браузера Ансара его классной руководительнице и матушке. В логах стабильно доминирует запрос: "почему меня все обзывают в интернете".`,
+        `[BASS BOOSTED]: Кофа зациклил на фоне запись плача Ансара из Дискорда и пустил её стримом на маркетплейс логов как промо-ролик. Продажи выросли на 300%.`,
+        `[КРАХ СИСТЕМЫ]: Ансар думал, что спрятал свои токены в папке "Домашнее задание", но rv0x3l достал их оттуда за 0.2 секунды. Теперь его аккаунт спамит приглашениями в наш Discord.`,
+        `[ФАКТ ДНЯ]: Единственный успешный обход защиты, который сделал Ансар — это когда он залез на стул, чтобы достать роутер, который мать спрятала от него на шкафу.`,
+        `[АНАЛИЗ ЛОГОВ]: Проверили куки цели. Ансар пытался купить приватный чит за 15 рублей, перевел деньги на CrystalPAY фейка, словил ратник и теперь сидит с чистого телефона.`,
+        `[УГАР СКВАДА]: Пока Ансар строчит гневные комменты и пытается доказать, что он не мамонт, его сессия Epic Games ушла с молотка. Спасибо за скины, бро.`,
+        `[ФИНАЛ]: Матушка Ансара зашла на этот сайт, оценила дизайн от rv0x3l и официально заявила, что Воксель, Кирилл, Александр и Кофа — лучшие ратеры СНГ. Ансару заблокирован доступ к ПК до 2035 года.`,
+        `[КОНСТАТАЦИЯ]: В процессе ansar.exe произошла критическая ошибка: мозг не обнаружен. Система полностью ликвидирована силами ОАО МЕГАЛЮЛЬ.`
+    ];
 
     // Управление модальным окном
     function toggleGameModal(show) {
@@ -469,7 +531,6 @@ EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;
         document.getElementById('audio-btn').style.display = 'none';
     }
 
-    // Попытка стартануть видео в фоне без звука сразу при загрузке
     window.addEventListener('DOMContentLoaded', () => {
         const video = document.getElementById('bg-video');
         video.play().catch(() => {});
@@ -503,10 +564,11 @@ EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;
         }
     }, 2500);
 
-    // Функция генерации текста унижения по кнопке
+    // Функция генерации случайного текста уничтожения из массива
     function generateAnsarFact() {
         const box = document.getElementById('ansar-quote');
-        box.innerHTML = YOUR_CUSTOM_TEXT;
+        const randomFact = ansarFacts[Math.floor(Math.random() * ansarFacts.length)];
+        box.innerHTML = randomFact;
         
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance("Ансар слит нахуй");
