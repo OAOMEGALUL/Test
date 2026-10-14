@@ -4,95 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ОАО МЕГАЛЮЛЬ — Официальное представительство</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
-
         :root {
-            --bg-color: #050505;
-            --surface-color: rgba(20, 20, 20, 0.6);
-            --accent: #ff0033;
-            --accent-dim: rgba(255, 0, 51, 0.1);
-            --text-main: #f0f0f0;
-            --text-muted: #888;
-            --border: rgba(255, 255, 255, 0.1);
-            --font-main: 'Inter', sans-serif;
+            --bg: #050506;
+            --surface: #09090b;
+            --border: #1f1f22;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #ef4444;
+            --font-sans: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg);
             color: var(--text-main);
-            font-family: var(--font-main);
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Фоновое видео */
-        .bg-video {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .bg-video::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-        }
-
-        .bg-video video {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
-        }
-
-        /* Сетка фона */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(255, 0, 51, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 51, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            font-family: var(--font-sans);
+            line-height: 1.5;
             padding: 40px 20px;
+            display: flex;
+            justify-content: center;
         }
 
-        /* Шапка */
+        .wrapper { width: 100%; max-width: 880px; }
+
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 15px;
+            padding-bottom: 24px;
+            margin-bottom: 48px;
         }
 
         .brand {
-            font-size: 1.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -1px;
+            font-family: var(--font-mono);
+            font-size: 15px;
+            font-weight: 600;
             color: var(--text-main);
             text-decoration: none;
         }
@@ -101,384 +54,104 @@
 
         .status-badge {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 6px 12px;
-            border-radius: 4px;
-            background: var(--accent-dim);
+            font-size: 12px;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            background: var(--surface);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .status-dot {
-            width: 8px; height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse 2s infinite;
-        }
+        .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
+        section { margin-bottom: 48px; }
+        .section-title { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 16px; }
 
-        /* Сетка */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
+        h1 { font-size: 28px; font-weight: 600; margin-bottom: 20px; letter-spacing: -0.03em; }
+        p { color: var(--text-muted); font-size: 15px; margin-bottom: 16px; }
 
-        @media (min-width: 968px) {
-            .grid { grid-template-columns: 2fr 1fr; }
-        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media(max-width: 640px) { .grid { grid-template-columns: 1fr; } }
 
-        /* Карточки */
-        .card {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            margin-bottom: 30px;
-            transition: border-color 0.3s ease;
-        }
+        .card { background: var(--surface); border: 1px solid var(--border); padding: 24px; }
+        .card h3 { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; font-family: var(--font-mono); }
+        .card p { font-size: 13px; margin-bottom: 0; }
 
-        .card:hover { border-color: rgba(255, 0, 51, 0.3); }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-title::before {
-            content: '';
-            display: block;
-            width: 4px; height: 20px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        p {
-            line-height: 1.6;
-            color: #ccc;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
-
-        /* Портрет */
-        .portrait-box {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-        }
-
-        .portrait-box img {
-            width: 100%;
-            display: block;
-            filter: grayscale(100%) contrast(1.2);
-            transition: filter 0.5s ease, transform 0.5s ease;
-        }
-
-        .portrait-box:hover img {
-            filter: grayscale(0%) contrast(1.1) hue-rotate(-10deg);
-            transform: scale(1.02);
-        }
-
-        .portrait-glitch {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(transparent, var(--accent-dim), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .portrait-box:hover .portrait-glitch { opacity: 1; }
-
-        /* Услуги */
-        .services { display: grid; gap: 15px; }
-        .service-item {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent);
-        }
-        .service-item h3 { font-size: 1rem; margin-bottom: 5px; }
-        .service-item p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
-
-        /* Докс блок */
-        .dox-box {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            background: #000;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            white-space: pre-wrap;
-            line-height: 1.6;
-            box-shadow: 0 0 20px rgba(255, 0, 51, 0.1);
-        }
-
-        /* Кнопки */
         .btn {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-main);
-            font-family: var(--font-mono);
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            margin-top: 10px;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--text-main); color: var(--bg);
+            font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+            padding: 10px 20px; text-decoration: none; border: none; cursor: pointer;
         }
-        .btn:hover { background: var(--text-main); color: #000; }
-        .btn-accent { border-color: var(--accent); color: var(--accent); }
-        .btn-accent:hover { background: var(--accent); color: #fff; }
-
-        /* Контакты */
-        .contacts { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.02);
-        }
-        .contact-link:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Логи */
-        .logs {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            height: 120px;
-            overflow-y: hidden;
-            background: #000;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            color: #555;
-            line-height: 1.4;
-        }
-        .logs span { color: var(--accent); }
-
-        .audio-banner {
-            background: var(--accent);
-            color: #fff;
-            text-align: center;
-            padding: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            font-family: var(--font-mono);
-        }
+        .btn:hover { opacity: 0.85; }
 
         footer {
-            margin-top: 50px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--border);
-            padding-top: 20px;
+            border-top: 1px solid var(--border); padding-top: 24px;
+            font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+            display: flex; justify-content: space-between;
         }
-
     </style>
 </head>
 <body>
 
-    <div class="bg-video">
-        <video id="bgVideo" src="https://i.imgur.com/5KJUwVg.mp4" loop muted playsinline></video>
-    </div>
-
-    <div class="container">
-        <div class="audio-banner" id="audioBtn">🔊 Включить звук фонового видео</div>
-
+    <div class="wrapper">
         <header>
             <a href="#" class="brand">ОАО <span>МЕГАЛЮЛЬ</span></a>
             <div class="status-badge">
                 <div class="status-dot"></div>
-                ANSAR TRACKED
+                <span id="site-status">SYNCHRONIZING...</span>
             </div>
         </header>
 
-        <div class="grid">
-            <main>
-                <div class="logs" id="logBox">
-                    <span>[SYS]</span> Инициализация протоколов глумления...<br>
-                    <span>[NET]</span> Сканирование сети цели завершено.<br>
-                    <span>[OK]</span> Данные получены.
+        <main>
+            <section>
+                <div class="section-title">01 / Манифест</div>
+                <h1>Против деструктивных элементов сети</h1>
+                <p id="site-lead">Загрузка данных...</p>
+            </section>
+
+            <section>
+                <div class="section-title">02 / Подразделения</div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>R&D / Разработка</h3>
+                        <p>Проектирование специализированного ПО и защита инфраструктуры периметра.</p>
+                    </div>
+                    <div class="card">
+                        <h3>HUMINT & OSINT</h3>
+                        <p>Анализ открытых источников и противодействие злоумышленникам.</p>
+                    </div>
                 </div>
-                <br>
+            </section>
 
-                <article class="card">
-                    <h2 class="card-title">Организация</h2>
-                    <div class="portrait-box">
-                        <img src="me.png" alt="Сквад">
-                        <div class="portrait-glitch"></div>
-                    </div>
-                    <p>Официальный хаб <strong style="color: #fff;">ОАО МЕГАЛЮЛЬ</strong>. Наша специализация — чистый, нефильтрованный угар, тотальный ратинг, продажа логов и доведение целей до истерики. Мы сожгли старый сайт к хуям, потому что он был слишком приличным.</p>
-                    <p>Если ты мамонт, пришедший за софтом — твои сессии уже улетают на наш сервер. Бизнес, ничего личного.</p>
-                </article>
-
-                <article class="card">
-                    <h2 class="card-title">Профиль деятельности</h2>
-                    <div class="services">
-                        <div class="service-item">
-                            <h3>Беспощадный Ратинг</h3>
-                            <p>Мы — ратеры и троллеры, которые делают свою работу красиво. Давим морально, технически и позиционно. Наш софт работает быстрее, чем цель успевает придумать отмазку.</p>
-                        </div>
-                        <div class="service-item">
-                            <h3>Массовый сбор логов</h3>
-                            <p>Выкачиваем логи подчистую со всех, кто запускает наши сборки. Дискорд-токены, куки и приватные сессии улетают в закат за секунды.</p>
-                        </div>
-                        <div class="service-item">
-                            <h3>Менеджмент и продажа</h3>
-                            <p>Собранный материал сортируется по валидности и гарантированно продается на бирже, конвертируя чужую тупость в чистый капитал.</p>
-                        </div>
-                        <div class="service-item">
-                            <h3>Слежка и доксинг</h3>
-                            <p>Логируем каждое действие цели в сети, мониторим скрытые папки на ПК и отправляем регулярные отчеты родственникам лично в руки.</p>
-                        </div>
-                    </div>
-                </article>
-            </main>
-
-            <aside>
-                <article class="card">
-                    <h2 class="card-title">Досье: Ansar</h2>
-                    <div class="dox-box">=== ЧЕПУШИЛА СЫН @xzqov @atingbar ===
-FULL NAME: Abdrazakov Ansar Rustamovich;
-DATE BIRTH: 19.07.2009;
-PHONE NUMBERS: +4917642798303;
-TELEGRAM ID: 7006131048, 5600561222;
-VK GROUP: https://vk.ru/club227221267;
-VK PROFILE: https://vk.ru/morty_sinner, https://vk.ru/id447348262;
-NEW HOME ADDRESS: Bergstraße 3, 70734 Fellbach, Deutschland;
-OLD HOME ADDRESS: 106 Gogolya St, Apt 56, Sterlitamak, Republic of Bashkortostan, Russia, 453130;
-
-=== МАТУХА @alairy19 @alenalawyer88 ===
-FULL NAME: Abdrazakova Alena Olegovna;
-DATE BIRTH: 08.11.1988;
-PHONE NUMBERS: +79104242757;
-PASSPORT ID: 4518199617
-EMAIL'S: alairy4@gmail.com, ayerol@yandex.ru;</div>
-                </article>
-
-                <article class="card">
-                    <h2 class="card-title">Контакты</h2>
-                    <div class="contacts">
-                        <a href="https://discord.gg/GcmUQfhWg6" target="_blank" class="contact-link">DISCORD SERVER</a>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h2 class="card-title">Генератор базы</h2>
-                    <p style="font-size: 0.85rem;">Нажми кнопку, чтобы выдать случайный факт унижения:</p>
-                    <button class="btn btn-accent" id="genFact">Сгенерировать</button>
-                    <div id="factBox" style="font-size: 0.85rem; margin-top: 15px; color: #aaa; min-height: 60px;">Ожидание команды...</div>
-                </article>
-            </aside>
-        </div>
+            <section>
+                <div class="section-title">03 / Связь</div>
+                <a href="#" id="discord-btn" target="_blank" class="btn">Discord Server</a>
+            </section>
+        </main>
 
         <footer>
-            &copy; 2026 ОАО МЕГАЛЮЛЬ. Все логи проданы, Ансар слит, его мать в курсе.
+            <span>© 2026 ОАО МЕГАЛЮЛЬ</span>
+            <span>SECURE_NODE</span>
         </footer>
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Расширенный массив рофл-сообщений про Ансара
-    const facts = [
-        `[СЛИВ]: Ансар умолял не сливать его архивы, но логи уже улетели перекупщикам на маркет. Мы — ратеры, и Ансар для нас просто очередной мамонт.`,
-        `[УНИЖЕНИЕ]: Ансар попытался пропатчить наш стиллер через Блокнот, но в итоге скинул нам пароли от маминой банковской карты. Теперь мы покупаем дедики за его счет.`,
-        `[РАТИНГ]: Зашли в сессию Ансара и обнаружили файл "как_стать_хакером_за_5_минут.txt". Его предел — кликать мышкой в Роблоксе.`,
-        `[СЛИВ 2.0]: Полная выписка логов браузера отправлена его классной руководительнице. В логах доминирует запрос: "почему меня все обзывают".`,
-        `[КРАХ]: Ансар думал, что спрятал токены в папке "Домашнее задание", но наш парсер достал их за 0.2 секунды.`,
-        `[ФИНАЛ]: Матушка зашла на этот сайт и официально заявила, что ОАО МЕГАЛЮЛЬ — лучшая организация СНГ. Ансару заблокирован доступ к ПК до 2035 года.`,
-        `[РОФЛ]: Ансар купил приватный чит за 15 рублей, перевел деньги фейку, словил ратник и теперь сидит с чистого телефона, плача в подушку.`,
-        `[ДОКС]: Единственный успешный взлом Ансара — это когда он залез на стул, чтобы достать роутер, который мать спрятала от него на шкафу.`,
-        `[БАЗА]: Ансар плачет в войсе Дискорда, потому что у него угнали аккаунт с кастомным скином за 50 рублей. Мантикора гордится тобой, бро.`,
-        `[СИСТЕМА]: В процессе ansar.exe произошла критическая ошибка: мозг не обнаружен. Процесс завершен аварийно.`,
-        `[МАРКЕТ]: Пока Ансар строчит гневные комменты, его сессия Epic Games ушла с молотка. Спасибо за скины, позорник.`,
-        `[ТРОЛЛИНГ]: Мать Ансара забанила его в домашнем Wi-Fi за неуспеваемость, а мы забанили его в интернете. Двойная блокировка.`,
-        `[ФАКТ]: Ансар пытался накрутить подписчиков в ТикТоке, но его токен слили и начали удалять его видео. Результат: -1000 подписчиков за час.`,
-        `[УГАР]: Ансар написал в техподдержку Дискорда с просьбой вернуть угнанный аккаунт. Они прислали ему мем с плачущим котом.`
-    ];
+    <script>
+        // Вставьте сюда URL вашего воркера
+        const WORKER_URL = 'https://fragrant-glade-be7f.rexetstios.workers.dev/api';
 
-    const logs = [
-        "[NET] Обнаружена вкладка 'смотреть порно для даунов'.",
-        "[SYS] Вытащен пароль от Роблокса: 'ansar2015super'.",
-        "[OK] Куки улетели на маркет. Считаем копейки с баланса Steam.",
-        "[ERR] Не удалось найти мозг в процессе ansar.exe.",
-        "[SCAN] Найдено 42 папки с гей-порно на рабочем столе цели.",
-        "[BAN] Ансар забанен в подсети матерью."
-    ];
-
-    // DOM
-    const video = document.getElementById('bgVideo');
-    const audioBtn = document.getElementById('audioBtn');
-    const logBox = document.getElementById('logBox');
-    const genFactBtn = document.getElementById('genFact');
-    const factBox = document.getElementById('factBox');
-
-    // Звук
-    audioBtn.addEventListener('click', () => {
-        video.muted = false;
-        video.play().catch(e => console.log(e));
-        audioBtn.style.display = 'none';
-    });
-
-    // Логи
-    setInterval(() => {
-        const log = logs[Math.floor(Math.random() * logs.length)];
-        const time = new Date().toLocaleTimeString();
-        logBox.innerHTML += `<br><span>[${time}]</span> ${log}`;
-        logBox.scrollTop = logBox.scrollHeight;
-        
-        let lines = logBox.innerHTML.split('<br>');
-        if (lines.length > 6) {
-            lines.shift();
-            logBox.innerHTML = lines.join('<br>');
-        }
-    }, 3000);
-
-    // Генератор
-    genFactBtn.addEventListener('click', () => {
-        factBox.textContent = facts[Math.floor(Math.random() * facts.length)];
-        factBox.style.color = '#fff';
-    });
-
-    video.play().catch(() => {});
-});
-</script>
+        fetch(WORKER_URL)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status) document.getElementById('site-status').textContent = data.status;
+                if (data.lead_text) document.getElementById('site-lead').textContent = data.lead_text;
+                if (data.discord_url) document.getElementById('discord-btn').href = data.discord_url;
+            })
+            .catch(() => {
+                document.getElementById('site-status').textContent = 'OFFLINE MODE';
+            });
+    </script>
 </body>
 </html>
