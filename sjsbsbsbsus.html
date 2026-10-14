@@ -3,83 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель Управления | ОАО МЕГАЛЮЛЬ</title>
+    <title>CONTROL PANEL // ОАО МЕГАЛЮЛЬ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { background: #050505; color: #ff5500; font-family: monospace; padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.8rem; }
-        input, textarea { 
-            width: 100%; padding: 10px; background: #0f0f0f; border: 1px solid #333; 
-            color: #fff; border-radius: 6px; box-sizing: border-box;
+        :root {
+            --bg: #050506;
+            --surface: #09090b;
+            --border: #1f1f22;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #ef4444;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-        button { 
-            width: 100%; padding: 15px; background: #ff5500; border: none; 
-            color: #000; font-weight: bold; text-transform: uppercase; border-radius: 6px;
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
         }
-        .status { margin-top: 20px; text-align: center; font-size: 0.9rem; }
+
+        .wrapper { width: 100%; max-width: 520px; }
+
+        h1 {
+            font-family: var(--font-mono); font-size: 16px; font-weight: 600;
+            border-bottom: 1px solid var(--border); padding-bottom: 16px;
+            margin-bottom: 24px; text-transform: uppercase;
+        }
+
+        label {
+            display: block; font-family: var(--font-mono); font-size: 11px;
+            color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; margin-top: 16px;
+        }
+
+        input, textarea {
+            width: 100%; background: var(--surface); border: 1px solid var(--border);
+            color: var(--text-main); padding: 10px 12px; font-family: var(--font-mono);
+            font-size: 13px; outline: none;
+        }
+        input:focus, textarea:focus { border-color: var(--text-main); }
+        textarea { min-height: 100px; resize: vertical; }
+
+        button {
+            margin-top: 24px; width: 100%; background: var(--text-main); color: var(--bg);
+            border: none; padding: 12px; font-family: var(--font-mono); font-weight: 500;
+            cursor: pointer; text-transform: uppercase; font-size: 13px;
+        }
+        button:hover { opacity: 0.85; }
+
+        #msg { margin-top: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
     </style>
 </head>
 <body>
-    <h2 style="text-align: center;">ADD NEW VICTIM</h2>
-    <form id="adminForm">
-        <div class="form-group">
-            <label>Ник мамонта:</label>
-            <input type="text" id="name" placeholder="@mammoth_dead" required>
-        </div>
-        <div class="form-group">
-            <label>Описание (за что наказан):</label>
-            <textarea id="description" rows="3" placeholder="Снесен за неуважение"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Ссылка на профиль:</label>
-            <input type="text" id="link" placeholder="https://t.me/...">
-        </div>
-        <div class="form-group">
-            <label>URL фото (аватарка):</label>
-            <input type="text" id="photo_url" placeholder="https://imgur.com/...">
-        </div>
-        <div class="form-group">
-            <label>Секретный ключ:</label>
-            <input type="password" id="secret_key" placeholder="Пароль админа" required>
-        </div>
-        <button type="submit">ОПУБЛИКОВАТЬ В HALL OF LULZ</button>
-    </form>
-    <div id="status" class="status"></div>
+
+    <div class="wrapper">
+        <h1>Control Panel // ОАО МЕГАЛЮЛЬ</h1>
+
+        <label>Секретный ключ (ADMIN_KEY)</label>
+        <input type="password" id="token" placeholder="Введите ключ доступа...">
+
+        <label>Статус в шапке</label>
+        <input type="text" id="status">
+
+        <label>Текст манифеста</label>
+        <textarea id="lead_text"></textarea>
+
+        <label>Ссылка на Discord</label>
+        <input type="text" id="discord_url">
+
+        <button onclick="saveData()">Сохранить изменения</button>
+        <div id="msg">Загрузка данных...</div>
+    </div>
 
     <script>
-        document.getElementById('adminForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const status = document.getElementById('status');
-            status.innerText = "Отправка...";
+        // Вставьте сюда URL вашего воркера
+        const WORKER_URL = 'https://fragrant-glade-be7f.rexetstios.workers.dev/api';
 
+        async function loadData() {
+            try {
+                const res = await fetch(WORKER_URL);
+                const data = await res.json();
+                document.getElementById('status').value = data.status || '';
+                document.getElementById('lead_text').value = data.lead_text || '';
+                document.getElementById('discord_url').value = data.discord_url || '';
+                document.getElementById('msg').textContent = 'Данные загружены.';
+            } catch (e) {
+                document.getElementById('msg').textContent = '[ERR] Ошибка связи с сервером.';
+            }
+        }
+
+        async function saveData() {
+            const token = document.getElementById('token').value;
             const payload = {
-                name: document.getElementById('name').value,
-                description: document.getElementById('description').value,
-                link: document.getElementById('link').value,
-                photo_url: document.getElementById('photo_url').value,
-                secret_key: document.getElementById('secret_key').value
+                status: document.getElementById('status').value,
+                lead_text: document.getElementById('lead_text').value,
+                discord_url: document.getElementById('discord_url').value
             };
 
+            document.getElementById('msg').textContent = 'Сохранение...';
+
             try {
-                const res = await fetch('/api/add-victim', {
+                const res = await fetch(WORKER_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
                     body: JSON.stringify(payload)
                 });
-                const result = await res.json();
-                if (result.success) {
-                    status.style.color = "lime";
-                    status.innerText = "Успешно! Мамонт на доске.";
-                    document.getElementById('adminForm').reset();
+
+                if (res.ok) {
+                    document.getElementById('msg').style.color = '#4ade80';
+                    document.getElementById('msg').textContent = '[OK] Успешно сохранено!';
                 } else {
-                    status.style.color = "red";
-                    status.innerText = "Ошибка: " + result.error;
+                    document.getElementById('msg').style.color = '#ef4444';
+                    document.getElementById('msg').textContent = '[ERR] Неверный секретный ключ.';
                 }
-            } catch (err) {
-                status.innerText = "Ошибка сети!";
+            } catch (e) {
+                document.getElementById('msg').style.color = '#ef4444';
+                document.getElementById('msg').textContent = '[ERR] Ошибка сети.';
             }
-        };
+        }
+
+        loadData();
     </script>
 </body>
 </html>
-
